@@ -46,6 +46,63 @@ class LinkedList {
         // point tmp to new node.
         tmp.next = node;
     }
+
+    remove(value) {
+        // check first node in linked list to see if 
+        // contains the value that we are looking for
+        if (this.head && this.head.value === value) {
+            // value = A
+            // head -> A -> B -> C .... -> Z
+            this.head = this.head.next;
+            // head -> B -> C .... -> Z
+            return true;
+
+            // head -> one -> null
+            // remove(one)
+            // head -> null
+        }
+
+        let prev = null;
+        let curr = this.head;
+        // loop until end of list or until value is found
+        while (curr && curr.value !== value) {
+            prev = curr;
+            curr = curr.next;
+        }
+
+        // we got to the end of list without finding
+        // matching value
+        if (curr === null) {
+            return false;
+        }
+
+        // found node with matching value; curr.
+        // remove curr node
+
+        // prev -> curr -> curr.next
+        prev.next = curr.next;
+        // prev -> curr.next
+        return true;
+    }
+
+    [Symbol.iterator]() {
+        // define initial values
+        const targetNum = 19;
+        let currNum = 0;
+
+        return {
+            next() {
+                // iterator logic
+                if (currNum < targetNum) {
+                    return { value: currNum++, done: false };
+                }
+
+                if (currNum === targetNum) {
+                    return { value: currNum, done: true };
+                }
+            }
+        }
+    }
 }
 
 class Node {
