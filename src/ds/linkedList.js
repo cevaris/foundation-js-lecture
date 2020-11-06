@@ -7,16 +7,10 @@ class LinkedList {
      * Return the length of the LinkedList.
      */
     length() {
-        if (this.head === null) {
-            return 0;
-        }
+        let length = 0;
 
-        let length = 1;
-
-        let tmp = this.head;
-        while (tmp.next != null) {
+        for (const value of this) {
             length++;
-            tmp = tmp.next;
         }
 
         return length;
@@ -85,23 +79,16 @@ class LinkedList {
         return true;
     }
 
-    [Symbol.iterator]() {
-        // define initial values
-        const targetNum = 19;
-        let currNum = 0;
-
-        return {
-            next() {
-                // iterator logic
-                if (currNum < targetNum) {
-                    return { value: currNum++, done: false };
-                }
-
-                if (currNum === targetNum) {
-                    return { value: currNum, done: true };
-                }
-            }
+    *iterator() {
+        let tmp = this.head;
+        while (tmp) {
+            yield tmp.value;
+            tmp = tmp.next;
         }
+    }
+
+    [Symbol.iterator]() {
+        return this.iterator();
     }
 }
 

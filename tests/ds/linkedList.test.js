@@ -58,22 +58,23 @@ test('remove many from list', () => {
 });
 
 
-test('iterate through list', () => {
+test('iterate through linked list', () => {
     const list = new LinkedList();
 
-    // for (let i = 0; i < 10; i++) {
-    //     list.add(i);
-    // }
+    const data = [];
 
-
-    const iter = list[Symbol.iterator]();
-    let state = iter.next();
-    while(!state.done){
-        console.log(state.value);
-        state = iter.next();
+    for (let i = 0; i < 1000; i++) {
+        list.add(i);
+        data.push(i);
     }
 
-    // for (const value of list) {
-    //     console.log(value);
-    // }
+    for (const value of list) {
+        // pop the value from reference list
+        const expectedValue = data.shift();
+        // expect value from reference list to be seen
+        expect(value).toBe(expectedValue);
+    }
+
+    // verify all values were seen
+    expect(data.length === 0).toBeTruthy();
 });
