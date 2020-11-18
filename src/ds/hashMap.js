@@ -22,7 +22,23 @@ class HashMap {
     put(key, value) {
         const hashNumber = hashCode(key);
         const bucketIdx = hashNumber % this.buckets.length;
-        console.log(key, hashNumber, bucketIdx);
+        const bucket = this.buckets[bucketIdx];
+
+        // create key value object
+        const kv = keyValue(key, value);
+
+        for (let i = 0; i < bucket.length; i++) {
+            // Need to use JSON.stringify to compare objects
+            if (JSON.stringify(bucket[i].key) === JSON.stringify(key)) {
+                // key is already present; update its value
+                bucket[i].value = value;
+                return;
+            }
+        }
+
+        // no duplicate ky found
+        // add new key value to bucket
+        bucket.push(kv);
     }
 
     /**
@@ -40,10 +56,36 @@ class HashMap {
     }
 
 
+    *iterator(){
+        // Loop through every and yield key value in HashMap 
+        for(const bucket of this.buckets){
+            for(const kv of bucket){
+                yield kv;
+            }
+        }
+        // for(let bucketIdx = 0; this.buckets.length; bucketIdx++){
+        //     for(let bucketArrayIdx = 0; this.buckets[bucketIdx].length; bucketArrayIdx++){
+        //         yield this.buckets[bucketIdx][bucketArrayIdx]
+        //     }
+        // }
+        // return 0;
+    }
+
+    [Symbol.iterator](){
+        return this.iterator();
+    }
+
 }
 
 module.exports = HashMap;
 
+
+function keyValue(key, value) {
+    return {
+        key: key,
+        value: value
+    };
+}
 
 /**
  * Generates a int53 number hashCode for a given object.
@@ -66,10 +108,10 @@ function hashCode(key) {
 }
 
 
-// const hash = hashFunc(key) -> number
+// const hash = h(key) -> number
 // const bucket = hash % bucketSize;
 
-// const hash = hashFunc("someKey") // 123123123112
-// const bucket = 123123123112 % 10;
-// [][]["someKey"][][][][][][][]
+// const hashNumber = h("someKey") // 123123123112
+// const bucket = hashNumber % 7;
+// [][][]["someKey"][][][][]
 
