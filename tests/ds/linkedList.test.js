@@ -68,11 +68,11 @@ test('iterate through linked list', () => {
         data.push(i);
     }
 
-    for (const value of list) {
+    for (const element of list) {
         // pop the value from reference list
         const expectedValue = data.shift();
         // expect value from reference list to be seen
-        expect(value).toBe(expectedValue);
+        expect(element).toBe(expectedValue);
     }
 
     // verify all values were seen

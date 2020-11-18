@@ -46,9 +46,9 @@ class LinkedList {
         // contains the value that we are looking for
         if (this.head && this.head.value === value) {
             // value = A
-            // head -> A -> B -> C .... -> Z
+            // head -> A -> B -> C .... -> Z -> null
             this.head = this.head.next;
-            // head -> B -> C .... -> Z
+            // head -> B -> C .... -> Z -> null
             return true;
 
             // head -> one -> null
@@ -72,10 +72,13 @@ class LinkedList {
 
         // found node with matching value; curr.
         // remove curr node
+ 
+        // value = Y
+        //       prev  curr
+        // head -> X -> Y -> Z -> null
+        // head -> X -> Z -> null
 
-        // prev -> curr -> curr.next
         prev.next = curr.next;
-        // prev -> curr.next
         return true;
     }
 
