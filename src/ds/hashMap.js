@@ -11,7 +11,11 @@ class HashMap {
      * Return number of KeyValues in HashMap.
      */
     get length() {
-        return 0;
+        let length = 0;
+        for (const _ of this) {
+            length++;
+        }
+        return length;
     }
 
     /**
@@ -43,9 +47,21 @@ class HashMap {
 
     /**
      * Retrieves a value from a HashMap, given the key.
+     * If key is not found, return null.
      * @param {*} key 
      */
     get(key) {
+        const hashNumber = hashCode(key);
+        const bucketIdx = hashNumber % this.buckets.length;
+        const bucket = this.buckets[bucketIdx];
+
+        const foundKV = bucket
+            .find(kv => JSON.stringify(kv.key) === JSON.stringify(key));
+        if (foundKV) {
+            return foundKV.value;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -56,22 +72,16 @@ class HashMap {
     }
 
 
-    *iterator(){
+    *iterator() {
         // Loop through every and yield key value in HashMap 
-        for(const bucket of this.buckets){
-            for(const kv of bucket){
-                yield kv;
+        for (const bucket of this.buckets) {
+            for (const kv of bucket) {
+                yield kv.value;
             }
         }
-        // for(let bucketIdx = 0; this.buckets.length; bucketIdx++){
-        //     for(let bucketArrayIdx = 0; this.buckets[bucketIdx].length; bucketArrayIdx++){
-        //         yield this.buckets[bucketIdx][bucketArrayIdx]
-        //     }
-        // }
-        // return 0;
     }
 
-    [Symbol.iterator](){
+    [Symbol.iterator]() {
         return this.iterator();
     }
 
