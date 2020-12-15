@@ -7,14 +7,6 @@ class BinaryTree {
         return 0;
     }
 
-    //    5
-    //  3   6
-
-    //    5
-    //  3   6
-    //2 
-
-    //TODO review nesting/stack of recursive methods
     add(value) {
         function recursiveAdd(node, value) {
             if (node === null) {
@@ -22,7 +14,7 @@ class BinaryTree {
             }
 
             const direction = comparator(value, node.value);
-            if (direction === -1) {
+            if (direction === -1) { 
                 node.left = recursiveAdd(node.left, value);
             }
             if (direction === 1) {
@@ -33,6 +25,39 @@ class BinaryTree {
         }
 
         this.root = recursiveAdd(this.root, value);
+    }
+
+    // add value 5
+    // recursiveAdd(null, 5)
+    //    Node(5)
+
+    // add value 3
+    // recursiveAdd(Node(5, null, null), 3)
+    //    recursiveAdd(null, 3)
+    //       Node(3)
+    //    Node(5, Node(3), null)
+    // update root
+
+    // add value 4
+    // recursiveAdd(Node(5, Node(3), null), 4)
+    //  recursiveAdd(Node(3, null, null), 4)
+    //   recursiveAdd(null, 4)
+    //    Node(4, null, null)
+    //   Node(3, null, Node(4, null, null))
+    // Node(5, Node(3, null, Node(4,null, null)), null)
+
+    /**
+     * Returns true if binary tree contains the value.
+     * Return false if binary tree does not contain the value.
+     */
+    contains(value) {
+        function containsAdd(node, value) {
+            // Recursively navigate tree to see if value exists.
+            // if current node value is equal to value, return true.
+            // if current value does not match, recursive deeper until reach bottom of tree.
+        }
+
+        return containsAdd(this.root, value);
     }
 }
 
