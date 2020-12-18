@@ -14,7 +14,7 @@ class BinaryTree {
             }
 
             const direction = comparator(value, node.value);
-            if (direction === -1) { 
+            if (direction === -1) {
                 node.left = recursiveAdd(node.left, value);
             }
             if (direction === 1) {
@@ -59,7 +59,52 @@ class BinaryTree {
 
         return containsAdd(this.root, value);
     }
+
+    [Symbol.iterator]() {
+        return this.inOrder(this.root);
+    }
+
+    iterator(order) {
+        switch(order){
+            case Order.IN_ORDER:
+                return this.inOrder(this.root);
+            case Order.PRE_ORDER:
+                return this.preOrder(this.root);
+            default:
+                throw Error(`invalid order ${order}`);
+        }
+    }
+
+    *inOrder(node) {
+        if (node !== null) {
+            // left
+            yield* this.inOrder(node.left);
+            // root
+            yield node.value;
+            // right
+            yield* this.inOrder(node.right);
+        }
+        return;
+    }
+
+    *preOrder(node) {
+        if (node !== null) {
+            // root
+            yield node.value;
+            // left
+            yield* this.preOrder(node.left);
+            // right
+            yield* this.preOrder(node.right);
+        }
+        return;
+    }
 }
+
+const Order = {
+    IN_ORDER: 'IN_ORDER',
+    PRE_ORDER: 'PRE_ORDER',
+    POST_ORDER: 'POST_ORDER',
+};
 
 class Node {
     /**
