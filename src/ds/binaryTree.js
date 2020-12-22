@@ -4,7 +4,11 @@ class BinaryTree {
     }
 
     get length() {
-        return 0;
+        let len = 0;
+        for (const e of this) {
+            len++;
+        }
+        return len;
     }
 
     add(value) {
@@ -16,9 +20,10 @@ class BinaryTree {
             const direction = comparator(value, node.value);
             if (direction === -1) {
                 node.left = recursiveAdd(node.left, value);
-            }
-            if (direction === 1) {
+            } else if (direction === 1) {
                 node.right = recursiveAdd(node.right, value);
+            } else {
+                return node;
             }
 
             return node;
@@ -51,13 +56,64 @@ class BinaryTree {
      * Return false if binary tree does not contain the value.
      */
     contains(value) {
-        function containsAdd(node, value) {
+        function recursiveContains(node, value) {
             // Recursively navigate tree to see if value exists.
             // if current node value is equal to value, return true.
             // if current value does not match, recursive deeper until reach bottom of tree.
         }
 
-        return containsAdd(this.root, value);
+        return recursiveContains(this.root, value);
+    }
+
+    remove(value) {
+        let removed = false;
+
+        function recursiveRemove(node, value) {
+            if (node === null) {
+                // hit the bottom of the tree; 
+                // value was not found
+                return null;
+            }
+
+            const direction = comparator(value, node.value);
+
+            if (direction === 0) {
+                removed = true;
+
+                // leaf node, no children
+                if (node.left === null && node.right === null) {
+                    return null;
+                }
+
+                // right is null; promote left
+                if (node.right === null) {
+                    return node.left;
+                }
+
+                // left is null; promote right
+                if (node.left === null) {
+                    return node.right;
+                }
+
+                // find next largest value
+                const smallestValue = findSmallestValue(node.right);
+                node.value = smallestValue;
+                node.right = recursiveRemove(node.right, value);
+            }
+
+            if (direction === -1) {
+                node.left = recursiveRemove(node.left, value);
+            }
+
+            if (direction === 1) {
+                node.right = recursiveRemove(node.right, value);
+            }
+
+            return node;
+        }
+
+        this.root = recursiveRemove(this.root, value);
+        return removed;
     }
 
     [Symbol.iterator]() {
@@ -65,7 +121,7 @@ class BinaryTree {
     }
 
     iterator(order) {
-        switch(order){
+        switch (order) {
             case Order.IN_ORDER:
                 return this.inOrder(this.root);
             case Order.PRE_ORDER:
@@ -118,6 +174,33 @@ class Node {
         this.right = right;
     }
 }
+
+/**
+ * Find left most node in a tree.
+ * A.K.A; Find the smallest node in a tree.
+ * @param {*} node 
+ */
+function findSmallestValue(node) {
+    // return node.left === null ?
+    //     node.value :
+    //     smallestValue(node.left);
+
+    if (node.left === null) {
+        return node.value; //5
+    } else {
+        return findSmallestValue(node.left);
+    }
+}
+
+// findSmallestValue(Node(11))
+//  findSmallestValue(Node(8))
+//   findSmallestValue(Node(6))
+//    findSmallestValue(Node(5))
+//     return 5;
+//    return 5;
+//   return 5;
+//  return 5;
+// return 5;
 
 /**
  * a < b => -1
