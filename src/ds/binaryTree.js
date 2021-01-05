@@ -20,10 +20,9 @@ class BinaryTree {
             const direction = comparator(value, node.value);
             if (direction === -1) {
                 node.left = recursiveAdd(node.left, value);
-            } else if (direction === 1) {
+            }
+            if (direction === 1) {
                 node.right = recursiveAdd(node.right, value);
-            } else {
-                return node;
             }
 
             return node;
@@ -98,7 +97,7 @@ class BinaryTree {
                 // find next largest value
                 const smallestValue = findSmallestValue(node.right);
                 node.value = smallestValue;
-                node.right = recursiveRemove(node.right, value);
+                node.right = recursiveRemove(node.right, smallestValue);
             }
 
             if (direction === -1) {
@@ -210,8 +209,8 @@ function findSmallestValue(node) {
  * @param {*} b 
  */
 function comparator(a, b) {
-    const left = JSON.stringify(a);
-    const right = JSON.stringify(b);
+    const left = a instanceof Object ? JSON.stringify(a) : a;
+    const right = b instanceof Object ? JSON.stringify(b) : b;
 
     if (left === right) {
         return 0;
@@ -219,4 +218,5 @@ function comparator(a, b) {
     return left < right ? -1 : 1;
 }
 
-module.exports = BinaryTree;
+exports.BinaryTree = BinaryTree;
+exports.comparator = comparator;
